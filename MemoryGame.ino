@@ -7,8 +7,6 @@ int roundNumber = 0;  // iterator that counts the number of past rounds
 bool flag_reset = false;
 
 void setup() {
-  Serial.begin(9600);
-
   if (!(sizeof(rightAnswers) == sizeof(playerAnswers))) {
     blink();
     while (true) {
@@ -16,8 +14,18 @@ void setup() {
     }
   }
 
-  pinMode(3, OUTPUT);
-  pinMode(4, OUTPUT);
+  //FIOLET - GND
+  //zielony 7
+  //zolty 8
+  //pomaranczowy 9
+  //bialy 10
+  //zielony 3
+  //zolty 4 
+  //pomaranozowy 5
+  //bialy 6
+  //RESET bialy 11
+
+  pinMode(3, OUTPUT); 
   pinMode(5, OUTPUT);
   pinMode(6, OUTPUT);
 
@@ -49,8 +57,6 @@ void blink() {
 }
 // Displaying right sequeance every round
 void displayRightSeq(int roundNumber) {
-  Serial.print("W displayRightSeq: ");
-  Serial.print(roundNumber);
   if (roundNumber <= 5) {
     for (int i = 0; i <= roundNumber; i++) {
       digitalWrite(rightAnswers[i] + 2, 1);
