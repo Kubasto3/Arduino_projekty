@@ -1,12 +1,14 @@
 // Predefined number of rounds in  brackets.
 //The size of arrays must be the same!
-int rightAnswers[6];               //Container which includes correct answers
-int playerAnswers[6];              //Container which includes players answers
+int rightAnswers[7];               //Container which includes correct answers
+int playerAnswers[7];              //Container which includes players answers
 
 int roundNumber = 0;  // iterator that counts the number of past rounds
 bool flag_reset = false;
 
 void setup() {
+  Serial.begin(9600);
+
   if (!(sizeof(rightAnswers) == sizeof(playerAnswers))) {
     blink();
     while (true) {
@@ -47,15 +49,17 @@ void blink() {
 }
 // Displaying right sequeance every round
 void displayRightSeq(int roundNumber) {
-  if (roundNumber <= 4) {
+  Serial.print("W displayRightSeq: ");
+  Serial.print(roundNumber);
+  if (roundNumber <= 5) {
     for (int i = 0; i <= roundNumber; i++) {
       digitalWrite(rightAnswers[i] + 2, 1);
-      delay(1000);
+      delay(500);
       digitalWrite(3, 0);
       digitalWrite(4, 0);
       digitalWrite(5, 0);
       digitalWrite(6, 0);
-      delay(1000);
+      delay(500);
     }
   } else {
     blink();
@@ -72,22 +76,22 @@ void playerChoice(int roundNumber) {
   if (digitalRead(7) == 0) {
     playerAnswers[roundNumber] = 1;
     digitalWrite(3, 1);
-    delay(1000);
+    delay(500);
     digitalWrite(3, 0);
   } else if (digitalRead(8) == 0) {
     playerAnswers[roundNumber] = 2;
     digitalWrite(4, 1);
-    delay(1000);
+    delay(500);
     digitalWrite(4, 0);
   } else if (digitalRead(9) == 0) {
     playerAnswers[roundNumber] = 3;
     digitalWrite(5, 1);
-    delay(1000);
+    delay(500);
     digitalWrite(5, 0);
   } else if (digitalRead(10) == 0) {
     playerAnswers[roundNumber] = 4;
     digitalWrite(6, 1);
-    delay(1000);
+    delay(500);
     digitalWrite(6, 0);
   }
 }
@@ -100,7 +104,7 @@ void checkAnswers(int roundNumber) {
         return;
       }
     }
-    playerChoice(roundNumber);
+    playerChoice(i);
     if (playerAnswers[i] == rightAnswers[i]) {
 
     } else {
@@ -127,9 +131,9 @@ void loop() {
   if (flag_reset == false) {
     randomSeed(analogRead(2));
     generateRandomNumber(roundNumber);
-    delay(1000);
+    delay(500);
     displayRightSeq(roundNumber);
-    delay(1000);
+    delay(500);
     checkAnswers(roundNumber);
     roundNumber = roundNumber + 1;
   } else {
